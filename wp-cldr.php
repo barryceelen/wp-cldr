@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name: WP CLDR
- * Description: Gives WordPress developers easy access to localized country, region, language, currency, and calendar info from the <a href="http://cldr.unicode.org/">Unicode Common Locale Data Repository</a>. See <a href="http://automattic.github.io/wp-cldr/class-WP_CLDR.html">API documentation</a>.
+ * Description: Gives WordPress developers easy access to localized country, region, language, currency, time zone, and calendar info from the <a href="http://cldr.unicode.org/">Unicode Common Locale Data Repository</a>. See <a href="http://automattic.github.io/wp-cldr/class-WP_CLDR.html">API documentation</a>.
  * Plugin URI:  https://github.com/Automattic/wp-cldr
  * Author:      Automattic
  * Author URI:  https://automattic.com
- * Version:     0.9
+ * Version:     1.0
  * Text Domain: wp-cldr
- * Domain Path: /languages/
+ * Domain Path: /languages
  * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *
@@ -33,9 +33,18 @@ function wp_cldr_menu() {
 }
 
 /**
+ * Loads the text domain for the plug-in. We call this only when the settings page is loaded since translations aren't needed any earlier.
+ */
+function wp_cldr_load_plugin_textdomain() {
+	load_plugin_textdomain( 'wp-cldr', false, basename( dirname( __FILE__ ) ) . '/languages/' );
+}
+
+/**
  * Gets the settings and examples page for the plugin.
  */
 function wp_cldr_settings() {
+
+	wp_cldr_load_plugin_textdomain();
 
 	if ( isset( $_GET['locale'] ) && 1 < strlen( sanitize_text_field( wp_unslash( $_GET['locale'] ) ) ) ) {
 		$locale = sanitize_text_field( wp_unslash( $_GET['locale'] ) );
